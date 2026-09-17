@@ -1,4 +1,4 @@
-# Meu Laborat�rio Git 
+# Meu Laboratorio Git 
 Estou aprendendo Git e GitHub. 
 
 1 - Instalar git
