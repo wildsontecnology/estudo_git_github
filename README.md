@@ -24,3 +24,17 @@ d) Vincular repositório local com o repositório remoto (GitHub)
 
 e) Subir alterações para o repositório remoto:
     git push -u origin main (Primeira vez) -> depois: git pus (para as próximas comitações)
+
+_________________________________________________________________________________________________
+
+Trabalhando com Branches:
+
+-> Comandos:
+    a) Clonar repositório remoto: git clone https://github.com/usuario/repositorio.git 
+    b) visualiza branches existes a partir do repositório: git branch
+    c) visualiza branches vinculadas aos repositórios remotos:  git branch -r
+    d) Cria uma nova branch e já muda para ela: git switch -c <nome-branch>
+    e) Publica a branch e estabelece seu upstream: git push -u origin <nome-branch>
+    f) No github é criado um PR (Pull Request) para que seja analisado e depois aceito seguindo para o merge
+    g) Busca informações/commits do remoto e atualiza referências como origin/main, sem integrar essas alterações à branch atual: git fetch
+    h) Busca alterações e as integra à branch atual, conforme a configuração de pull: git pull
