@@ -251,3 +251,246 @@ Utilizar este repositório para praticar:
 * Merge
 * `fetch` e `pull`
 * Integração entre Git e GitHub
+_______________________________________________________________________________________________
+
+🔐 Criar uma nova SSH para o GitHub no Windows
+
+1. Verificar as chaves existentes
+
+No PowerShell:
+
+Get-ChildItem $env:USERPROFILE\.ssh -Force
+
+Exemplo:
+
+id_ed25519
+id_ed25519.pub
+
+A chave antiga deve ser preservada quando não sabemos sua passphrase.
+
+2. Criar uma nova chave SSH
+
+Execute:
+
+ssh-keygen -t ed25519 -C "seu-email"
+
+Quando aparecer:
+
+Enter file in which to save the key:
+
+informe um nome diferente da chave antiga, por exemplo:
+
+C:\Users\SEU_USUARIO\.ssh\id_ed25519_github
+
+Quando aparecer:
+
+Enter passphrase:
+
+Para criar a chave sem passphrase, pressione:
+
+Enter
+
+Depois, em:
+
+Enter same passphrase again:
+
+pressione Enter novamente.
+
+Serão criados:
+
+id_ed25519_github
+id_ed25519_github.pub
+
+3. Se a primeira chave nova estiver com problema
+
+Se a nova chave tiver sido criada com uma passphrase que você não
+consegue utilizar, exclua somente a nova chave problemática.
+
+Remove-Item "$env:USERPROFILE\.ssh\id_ed25519_github"
+Remove-Item "$env:USERPROFILE\.ssh\id_ed25519_github.pub"
+
+Depois confirme:
+
+Get-ChildItem $env:USERPROFILE\.ssh -Force
+
+A chave antiga id_ed25519 deve continuar intacta.
+
+Em seguida, crie novamente a nova chave seguindo o passo 2.
+
+4. Copiar a chave pública
+
+A chave que deve ser cadastrada no GitHub é a pública:
+
+id_ed25519_github.pub
+
+Para visualizar:
+
+Get-Content "$env:USERPROFILE\.ssh\id_ed25519_github.pub"
+
+Ou copiar diretamente para a área de transferência:
+
+Get-Content "$env:USERPROFILE\.ssh\id_ed25519_github.pub" | Set-Clipboard
+
+⚠️ Nunca compartilhe a chave privada id_ed25519_github.
+
+5. Adicionar a chave ao GitHub
+
+No GitHub, acesse:
+
+Settings → SSH and GPG keys → New SSH key
+
+Preencha:
+
+Title:
+
+PC WINDOWS II
+
+Key type:
+
+Authentication Key
+
+Key:
+
+Cole o conteúdo de:
+
+id_ed25519_github.pub
+
+Depois clique em:
+
+Add SSH key
+
+6. Criar o arquivo de configuração SSH
+
+Crie o arquivo:
+
+C:\Users\SEU_USUARIO\.ssh\config
+
+No PowerShell:
+
+notepad $env:USERPROFILE\.ssh\config
+
+Coloque exatamente:
+
+Host github.com
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/id_ed25519_github
+    IdentitiesOnly yes
+
+Salve e feche o Bloco de Notas.
+
+⚠️ Atenção ao Windows
+
+O arquivo precisa se chamar:
+
+config
+
+e não:
+
+config.txt
+
+Se o Bloco de Notas criar config.txt, renomeie:
+
+Rename-Item "$env:USERPROFILE\.ssh\config.txt" "config"
+
+7. Conferir o arquivo de configuração
+
+Execute:
+
+Get-Content "$env:USERPROFILE\.ssh\config"
+
+O resultado esperado:
+
+Host github.com
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/id_ed25519_github
+    IdentitiesOnly yes
+
+8. Testar a autenticação
+
+Execute:
+
+ssh -T git@github.com
+
+Se estiver tudo correto, deverá aparecer algo semelhante a:
+
+Hi SEU_USUARIO! You've successfully authenticated, but GitHub does not provide shell access.
+
+Esse resultado confirma que o SSH está autenticando no GitHub.
+
+📁 Estrutura final
+
+A pasta .ssh deverá ficar aproximadamente assim:
+
+C:\Users\SEU_USUARIO\.ssh\
+│
+├── id_ed25519                 ← chave antiga
+├── id_ed25519.pub             ← chave pública antiga
+│
+├── id_ed25519_github          ← NOVA chave privada
+├── id_ed25519_github.pub      ← NOVA chave pública
+│
+├── config                     ← configuração do SSH
+├── known_hosts
+└── known_hosts.old
+
+🧠 Como funciona
+
+A configuração:
+
+Host github.com
+    IdentityFile ~/.ssh/id_ed25519_github
+    IdentitiesOnly yes
+
+informa ao SSH:
+
+Quando a conexão for com github.com, utilize especificamente a chave
+id_ed25519_github.
+
+Assim, a chave antiga:
+
+id_ed25519
+
+pode permanecer no computador sem interferir na autenticação do GitHub.
+
+📌 Checklist rápido
+
+# 1. Verificar chaves
+Get-ChildItem $env:USERPROFILE\.ssh -Force
+
+# 2. Criar nova chave
+ssh-keygen -t ed25519 -C "seu-email"
+
+# 3. Copiar chave pública
+Get-Content "$env:USERPROFILE\.ssh\id_ed25519_github.pub" | Set-Clipboard
+
+# 4. Criar configuração
+notepad $env:USERPROFILE\.ssh\config
+
+# 5. Conferir configuração
+Get-Content "$env:USERPROFILE\.ssh\config"
+
+# 6. Testar GitHub
+ssh -T git@github.com
+
+🎯 Resultado esperado
+
+Computador
+    │
+    │ SSH
+    ▼
+~/.ssh/config
+    │
+    │ id_ed25519_github
+    ▼
+GitHub
+    │
+    │ autenticação
+    ▼
+Sua conta GitHub
+
+Regra importante: a chave .pub é a chave pública e pode ser
+cadastrada no GitHub. A chave sem .pub é privada e deve permanecer
+protegida no computador.
+  
