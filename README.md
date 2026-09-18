@@ -1,40 +1,253 @@
-# Meu Laboratorio Git 
-Estou aprendendo Git e GitHub. 
+# Meu Laboratório Git
 
-1 - Instalar git
+Estou aprendendo **Git** e **GitHub** e utilizando este repositório como laboratório para praticar os principais conceitos e comandos.
 
-2 - Criar conta no GitHub
+## Preparação
 
-3 - Criar pasta do repositório
+Antes de começar, é necessário:
 
-_________________________________
+1. Instalar o **Git**
+2. Criar uma conta no **GitHub**
+3. Criar uma pasta para o repositório local
 
-Comandos iniciais:
+## Comandos Iniciais
 
-a) Iniciar Repositório
-    git init
+### Iniciar um repositório
 
-b) Adicionar alterações ou inclusões de arquivos para área de esperado do commit
+```bash
+git init
+```
 
-c) Comitar alterações: 
-    git commit -m "Descricao das alteracoes realizadas"
+Inicializa um novo repositório Git dentro da pasta atual.
 
-d) Vincular repositório local com o repositório remoto (GitHub)
-    git remote add origin <vincular_chave_ssh ou http>
+### Adicionar arquivos à Staging Area
 
-e) Subir alterações para o repositório remoto:
-    git push -u origin main (Primeira vez) -> depois: git pus (para as próximas comitações)
+```bash
+git add .
+```
 
-_________________________________________________________________________________________________
+Adiciona as alterações e os novos arquivos à **Staging Area**, deixando-os preparados para o próximo commit.
 
-Trabalhando com Branches:
+Também é possível adicionar um arquivo específico:
 
--> Comandos:
-    a) Clonar repositório remoto: git clone https://github.com/usuario/repositorio.git 
-    b) visualiza branches existes a partir do repositório: git branch
-    c) visualiza branches vinculadas aos repositórios remotos:  git branch -r
-    d) Cria uma nova branch e já muda para ela: git switch -c <nome-branch>
-    e) Publica a branch e estabelece seu upstream: git push -u origin <nome-branch>
-    f) No github é criado um PR (Pull Request) para que seja analisado e depois aceito seguindo para o merge
-    g) Busca informações/commits do remoto e atualiza referências como origin/main, sem integrar essas alterações à branch atual: git fetch
-    h) Busca alterações e as integra à branch atual, conforme a configuração de pull: git pull
+```bash
+git add nome-do-arquivo
+```
+
+### Criar um commit
+
+```bash
+git commit -m "Descrição das alterações realizadas"
+```
+
+Registra as alterações que estavam na **Staging Area** no histórico do repositório.
+
+### Vincular o repositório local ao repositório remoto
+
+```bash
+git remote add origin <URL_DO_REPOSITORIO>
+```
+
+Vincula o repositório local a um repositório remoto, como o GitHub.
+
+Exemplo utilizando HTTPS:
+
+```bash
+git remote add origin https://github.com/usuario/repositorio.git
+```
+
+Exemplo utilizando SSH:
+
+```bash
+git remote add origin git@github.com:usuario/repositorio.git
+```
+
+### Enviar alterações para o repositório remoto
+
+#### Primeiro envio
+
+```bash
+git push -u origin main
+```
+
+Envia a branch `main` para o repositório remoto e estabelece o **upstream** entre a branch local e a branch remota.
+
+#### Próximos envios
+
+Depois que o upstream foi configurado, normalmente é possível utilizar:
+
+```bash
+git push
+```
+
+## Trabalhando com Branches
+
+Branches permitem desenvolver novas funcionalidades ou alterações de forma isolada, sem modificar diretamente a branch principal.
+
+### Clonar um repositório remoto
+
+```bash
+git clone https://github.com/usuario/repositorio.git
+```
+
+Clona um repositório remoto para a máquina local.
+
+### Visualizar as branches locais
+
+```bash
+git branch
+```
+
+Exibe as branches existentes no repositório local.
+
+### Visualizar as branches remotas
+
+```bash
+git branch -r
+```
+
+Exibe as branches existentes no repositório remoto.
+
+### Criar uma nova branch e mudar para ela
+
+```bash
+git switch -c <nome-branch>
+```
+
+Cria uma nova branch e muda automaticamente para ela.
+
+Exemplo:
+
+```bash
+git switch -c feature/nova-funcionalidade
+```
+
+### Publicar a branch no GitHub
+
+```bash
+git push -u origin <nome-branch>
+```
+
+Envia a nova branch para o repositório remoto e estabelece seu **upstream**.
+
+### Criar um Pull Request
+
+Depois de publicar a branch no GitHub, pode-se criar um **Pull Request (PR)**.
+
+O Pull Request permite que as alterações sejam analisadas antes de serem incorporadas à branch de destino por meio de um **merge**.
+
+Fluxo básico:
+
+```text
+Branch de trabalho
+       ↓
+     commit
+       ↓
+     push
+       ↓
+Pull Request
+       ↓
+     revisão
+       ↓
+     merge
+       ↓
+Branch principal
+```
+
+### Buscar informações do repositório remoto
+
+```bash
+git fetch
+```
+
+Busca informações e commits do repositório remoto e atualiza as referências remotas, como:
+
+```text
+origin/main
+```
+
+O `git fetch` **não integra automaticamente** essas alterações à branch atual.
+
+### Buscar e integrar alterações
+
+```bash
+git pull
+```
+
+Busca as alterações do repositório remoto e as integra à branch atual, conforme a configuração de `pull`.
+
+De forma simplificada:
+
+```text
+git pull = git fetch + integração das alterações
+```
+
+## Fluxo Básico do Git
+
+Um fluxo comum para trabalhar com Git é:
+
+```text
+Alterar arquivos
+      ↓
+   git add
+      ↓
+Staging Area
+      ↓
+  git commit
+      ↓
+Repositório local
+      ↓
+   git push
+      ↓
+Repositório remoto (GitHub)
+```
+
+### Fluxo com Branches
+
+```text
+main
+ │
+ └── feature/nova-funcionalidade
+          ↓
+       git add
+          ↓
+       git commit
+          ↓
+       git push
+          ↓
+    Pull Request
+          ↓
+        Merge
+          ↓
+         main
+```
+
+## Resumo dos Principais Comandos
+
+| Comando      | Função                                     |
+| ------------ | ------------------------------------------ |
+| `git init`   | Inicializa um repositório Git              |
+| `git clone`  | Clona um repositório remoto                |
+| `git status` | Exibe o estado atual do repositório        |
+| `git add`    | Adiciona alterações à Staging Area         |
+| `git commit` | Registra alterações no histórico           |
+| `git branch` | Lista branches locais                      |
+| `git switch` | Troca de branch                            |
+| `git remote` | Gerencia conexões com repositórios remotos |
+| `git fetch`  | Busca alterações do remoto sem integrá-las |
+| `git pull`   | Busca e integra alterações do remoto       |
+| `git push`   | Envia commits para o repositório remoto    |
+
+## Objetivo do Laboratório
+
+Utilizar este repositório para praticar:
+
+* Fundamentos do Git
+* Repositórios locais e remotos
+* Commits
+* Staging Area
+* Branches
+* Pull Requests
+* Merge
+* `fetch` e `pull`
+* Integração entre Git e GitHub
